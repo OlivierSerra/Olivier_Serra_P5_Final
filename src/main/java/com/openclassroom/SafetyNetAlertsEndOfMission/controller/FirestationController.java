@@ -45,7 +45,7 @@ public class FirestationController {
     @DeleteMapping("/firestation/{address}/{station}")
     public Firestation deletefirestation(
             @PathVariable("address") String address,
-            @PathVariable("station") Integer station,
+            @PathVariable("station") String station,
             @RequestBody Firestation firestation) { 
     //logger.info("you deleted a firestation");  
     return firestationService.delete(address, station);
@@ -57,7 +57,7 @@ public class FirestationController {
 @PutMapping("/firestation/{address}/{station}")
     public Firestation updatefirestation(
             @PathVariable("address") String address,
-            @PathVariable("station") Integer station,
+            @PathVariable("station") String station,
             @RequestBody Firestation FirestationToUpdate)  {
         return firestationService.update(address, station, FirestationToUpdate);        
     }

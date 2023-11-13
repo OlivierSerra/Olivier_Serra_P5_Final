@@ -12,6 +12,9 @@ import lombok.*;
 @Data
 
 public class Firestation {
-    private Integer station;
     private String address;
+    private String station;
+    public Firestation get() {
+        return null;
+    }
 }

@@ -33,18 +33,18 @@ public Firestation save(Firestation firestation ) {
 /*
 * used to delete a person
 */
-public Firestation delete(String address, Integer station) {
+public Firestation delete(String address, String station) {
     return firestationRepository.deleteFirestation(address, station);
     }
 
 /*
 * return person if criterias match  
 */       
-public Firestation update(String address, Integer station, Firestation firestationToUpdate) {
+public Firestation update(String address, String station, Firestation firestationToUpdate) {
     return firestationRepository.updateFirestation(address, station, firestationToUpdate);   
     }
 
-public Firestation getFirestation (String address, Integer station) {
+public Firestation getFirestation (String address, String station) {
     return firestationRepository.firestation(address, station);
 }
 

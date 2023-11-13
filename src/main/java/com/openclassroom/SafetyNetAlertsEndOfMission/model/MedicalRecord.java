@@ -16,5 +16,8 @@ public class MedicalRecord {
     private String birthdate;
     private List<String> medications;
     private List<String> allergies;
+    public MedicalRecord get() {
+        return null;
+    }
 
 }

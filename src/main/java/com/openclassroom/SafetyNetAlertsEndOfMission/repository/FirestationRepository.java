@@ -2,6 +2,8 @@ package com.openclassroom.SafetyNetAlertsEndOfMission.repository;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import com.openclassroom.SafetyNetAlertsEndOfMission.model.Firestation;
+import com.openclassroom.SafetyNetAlertsEndOfMission.model.Person;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -25,7 +27,7 @@ public class FirestationRepository {
     * 
     */    
     //fait fonctionner la fonction delete de type firestation
-    public Firestation firestation(String address, Integer station) {  
+    public Firestation firestation(String address, String station) {  
         for (Firestation firestation : firestations) {
         if (firestation.getAddress().equals(address) && firestation.getStation().equals(station)) {
             return firestation; 
@@ -35,13 +37,13 @@ public class FirestationRepository {
     }
 
     //fait fonctionner la fonction update de type optionnal
-    public Optional<Firestation> FindByAddressAndStationNumber(String address, Integer station) {  
+    public Firestation FindByAddressAndStationNumber(String address, String station) {  
         for (Firestation firestation : firestations) {
         if (firestation.getAddress().equals(address) && firestation.getStation().equals(station)) {
-            return Optional.of(firestation); 
+            return firestation; 
         }
     }
-    return Optional.empty(); 
+    return null; 
     }
 
     /*
@@ -61,13 +63,13 @@ public class FirestationRepository {
     /*
     * update
     */
-    public Firestation updateFirestation(String address, Integer station, Firestation firestationToUpdate) {
-        Optional<Firestation> firestationOptional = FindByAddressAndStationNumber(address, station);
+    public Firestation updateFirestation(String address, String string, Firestation FirestationToUpdate) {
+        Firestation firestationFound = FindByAddressAndStationNumber(address, string);
 
-        if (firestationOptional.isPresent()) {
-            Firestation updatedFirestation = firestationOptional.get();
+        if (firestationFound != null) {
+            Firestation updatedFirestation = firestationFound.get();
 
-            updatedFirestation.setStation(firestationToUpdate.getStation());
+            updatedFirestation.setStation(FirestationToUpdate.getStation());
             
             return saveFirestation(updatedFirestation);
         }
@@ -75,7 +77,7 @@ public class FirestationRepository {
     }
 /*************************************** Delete ******************************** */
  
-    public Firestation deleteFirestation(String address, Integer station) {
+    public Firestation deleteFirestation(String address, String station) {
         Firestation deletedfirestation = null;
         Firestation firestationToDelete = firestation(address, station);
         for (Firestation p : this.firestations) {

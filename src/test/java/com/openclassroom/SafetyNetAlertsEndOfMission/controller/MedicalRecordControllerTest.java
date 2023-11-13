@@ -1,137 +1,156 @@
-package com.mariemoore.safetynet.controller;
+package com.openclassroom.SafetyNetAlertsEndOfMission.controller;
 
-import com.mariemoore.safetynet.jsonUtils;
-import com.mariemoore.safetynet.model.MedicalRecord;
-import com.mariemoore.safetynet.service.MedicalRecordService;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-import java.util.Arrays;
-import java.util.List;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@WebMvcTest(controllers = MedicalRecordController.class)
+import java.util.Arrays;
+import java.util.List;
+
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.openclassroom.SafetyNetAlertsEndOfMission.model.MedicalRecord;
+import com.openclassroom.SafetyNetAlertsEndOfMission.services.MedicalRecordService;
+
+
+@ExtendWith(MockitoExtension.class)
 public class MedicalRecordControllerTest {
 
-    @Autowired
-    private MockMvc mvc;
+    @Mock
+    private MedicalRecordService medicalRecordService;
 
-    @MockBean
-    MedicalRecordService medicalRecordService;
+    @InjectMocks
+    private MedicalRecordControllerTest medicalRecordControllerTest;
 
-    private List<MedicalRecord> medicalRecordList;
-
-    private MedicalRecord johnsMedicalRecord;
-    private MedicalRecord jacobsMedicalRecord;
-    private MedicalRecord tenleyMedicalRecord;
-
-    @BeforeAll
-    void setup() {
-        johnsMedicalRecord = new MedicalRecord(
-                "John",
-                "Boyd",
-                "03/06/1984",
-                Arrays.asList("aznol:350mg", "hydrapermazol:100mg"),
-                Arrays.asList("nillacilan"));
-        jacobsMedicalRecord = new MedicalRecord(
-                "Jacob",
-                "Boyd",
-                "03/06/1989",
-                Arrays.asList("pharmacol:5000mg", "terazine:10mg", "noznazol:250mg"),
-                Arrays.asList());
-
-        tenleyMedicalRecord = new MedicalRecord(
-                "Tenley",
-                "Boyd",
-                "02/18/2012",
-                Arrays.asList(),
-                Arrays.asList("peanut"));
-
-        medicalRecordList = Arrays.asList(johnsMedicalRecord, jacobsMedicalRecord, tenleyMedicalRecord);
-    }
+    private MockMvc mockMvc;
 
     @Test
-    public void getAllMedicalRecordsShouldReturnListOfMedicalRecords() throws Exception{
-        when(medicalRecordService.getMedicalRecords()).thenReturn(medicalRecordList);
-        mvc.perform(get("/medicalrecord/all"))
-                .andDo(print())
+    void testMedicalRecords() throws Exception {
+        // Données de test
+        MedicalRecord medicalRecord1 = new MedicalRecord("John", "Boyd", "03/06/1984", Arrays.asList("aznol:350mg", "hydrapermazol:100mg"), Arrays.asList("nillacilan"));
+        List<MedicalRecord> medicalRecords = Arrays.asList(medicalRecord1);
+
+        // Définir le comportement du service mock
+        when(medicalRecordService.findAll()).thenReturn(medicalRecords);
+
+        // Initialiser le MockMvc
+        mockMvc = MockMvcBuilders.standaloneSetup(medicalRecordControllerTest).build();
+
+        // Effectuer la requête HTTP GET
+        mockMvc.perform(get("/medicalRecord"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(3)))
-                .andExpect(jsonPath("$[0].firstName", is("John")))
-                .andExpect(jsonPath("$[1].firstName", is("Jacob")))
-                .andExpect(jsonPath("$[2].firstName", is("Tenley")));
+                .andExpect(jsonPath("$[0].firstName").value("John"))
+                .andExpect(jsonPath("$[0].lastName").value("Boyd"))
+                .andExpect(jsonPath("$[0].birthdate").value("03/06/1984"))
+                .andExpect(jsonPath("$[0].medications[0]").value("aznol:350mg"))
+                .andExpect(jsonPath("$[0].medications[1]").value("hydrapermazol:100mg"))
+                .andExpect(jsonPath("$[0].allergies[0]").value("nillacilan"))
+                .andReturn();
+    }
+
+    
+    @Test
+    void testAddMedicalRecord() throws Exception {
+        // Données de test
+        MedicalRecord medicalRecordToAdd = new MedicalRecord("John", "Boyd", "03/06/1984", Arrays.asList("aznol:350mg", "hydrapermazol:100mg"), Arrays.asList("nillacilan"));
+        MedicalRecord savedMedicalRecord = new MedicalRecord("John", "Boyd", "08/07/1985", Arrays.asList("aznol:350mg", "hydrapermazol:100mg"), Arrays.asList("nillacilan"));
+
+        // Définir le comportement du service mock
+        when(medicalRecordService.save(medicalRecordToAdd)).thenReturn(savedMedicalRecord);
+
+        // Initialiser le MockMvc
+        mockMvc = MockMvcBuilders.standaloneSetup(medicalRecordControllerTest).build();
+
+        // Créer le JSON à envoyer dans la requête
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonInput = objectMapper.writeValueAsString(medicalRecordToAdd);
+
+        // Effectuer la requête HTTP POST avec le JSON en tant que corps de la requête
+        mockMvc.perform(post("/medicalRecord")
+                .contentType("application/json")
+                .content(jsonInput))
+                .andExpect(status().isOk())
+                // Ajouter d'autres assertions selon les besoins
+                // Vous pouvez vérifier le contenu de la réponse JSON, l'objet ajouté, etc.
+                .andExpect(jsonPath("$.firstName").value("John"))
+                .andExpect(jsonPath("$.lastName").value("Boyd"))
+                .andExpect(jsonPath("$.birthdate").value("03/06/1984"))
+                .andExpect(jsonPath("$.medications[0]").value("aznol:350mg"))
+                .andExpect(jsonPath("$.medications[1]").value("hydrapermazol:100mg"))
+                .andExpect(jsonPath("$.allergies[0]").value("nillacilan"))
+                .andReturn();
     }
 
     @Test
-    public void addMedicalRecordShouldReturnMedicalRecord() throws Exception{
-        when(medicalRecordService.addMedicalRecord(johnsMedicalRecord)).thenReturn(johnsMedicalRecord);
-        mvc.perform(post("/medicalrecord")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(jsonUtils.asJsonString(johnsMedicalRecord)))
-                .andDo(print())
-                .andExpect(status().isOk());
+    void testDeleteMedicalRecord() throws Exception {
+        // Données de test
+        
+        MedicalRecord medicalRecordToDelete = new MedicalRecord("John", "Boyd", "03/06/1984",
+                Arrays.asList("aznol:350mg", "hydrapermazol:100mg"), Arrays.asList("nillacilan"));
+
+        // Définir le comportement du service mock
+        when(medicalRecordService.delete("John", "Boyd")).thenReturn(medicalRecordToDelete);
+
+        // Initialiser le MockMvc
+        mockMvc = MockMvcBuilders.standaloneSetup(medicalRecordControllerTest).build();
+
+        // Effectuer la requête HTTP DELETE sans corps de requête (utilisez simplement l'URL)
+        mockMvc.perform(delete("/medicalRecord/{firstName}/{lastName}", "John", "Boyd")
+                .contentType("application/json"))
+                .andExpect(status().isOk())
+                // Ajouter d'autres assertions selon les besoins
+                // Vous pouvez vérifier le contenu de la réponse JSON, l'objet supprimé, etc.
+                .andExpect(jsonPath("$.firstName").value("John"))
+                .andExpect(jsonPath("$.lastName").value("Boyd"))
+                .andExpect(jsonPath("$.birthdate").value("03/06/1984"))
+                .andExpect(jsonPath("$.medications[0]").value("aznol:350mg"))
+                .andExpect(jsonPath("$.medications[1]").value("hydrapermazol:100mg"))
+                .andExpect(jsonPath("$.allergies[0]").value("nillacilan"))
+                .andReturn();
     }
 
     @Test
-    public void addInvalidMedicalRecordShouldNotReturnMedicalRecord() throws Exception{
-        when(medicalRecordService.addMedicalRecord(johnsMedicalRecord)).thenReturn(null);
-        mvc.perform(post("/medicalrecord")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(jsonUtils.asJsonString(johnsMedicalRecord)))
-                .andDo(print())
-                .andExpect(status().isNoContent());
-    }
+    void testUpdateMedicalRecord() throws Exception {
+        // Données de test
+        MedicalRecord medicalRecordToUpdate = new MedicalRecord("John", "Boyd", "03/06/1984",
+                Arrays.asList("aznol:350mg", "hydrapermazol:100mg"), Arrays.asList("nillacilan"));
+        MedicalRecord updatedMedicalRecord = new MedicalRecord(/* initialiser avec les valeurs mises à jour */);
 
-    @Test
-    public void updateMedicalRecordShouldReturnMedicalRecord() throws Exception{
-        when(medicalRecordService.updateMedicalRecord(johnsMedicalRecord)).thenReturn(johnsMedicalRecord);
-        mvc.perform(put("/medicalrecord")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(jsonUtils.asJsonString(johnsMedicalRecord)))
-                .andDo(print())
-                .andExpect(status().isOk());
-    }
+        // Définir le comportement du service mock
+        when(medicalRecordService.update("John", "Boyd", medicalRecordToUpdate)).thenReturn(updatedMedicalRecord);
 
-    @Test
-    public void updateMedicalRecordWithInvalidPropertiesShouldNotUpdateAndReturnMedicalRecord() throws Exception{
-        when(medicalRecordService.updateMedicalRecord(johnsMedicalRecord)).thenReturn(null);
-        mvc.perform(put("/medicalrecord")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(jsonUtils.asJsonString(johnsMedicalRecord)))
-                .andDo(print())
-                .andExpect(status().isNoContent());
-    }
+        // Initialiser le MockMvc
+        mockMvc = MockMvcBuilders.standaloneSetup(medicalRecordControllerTest).build();
+        // Utiliser ObjectMapper pour sérialiser l'objet MedicalRecord en JSON
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonInput = objectMapper.writeValueAsString(medicalRecordToUpdate);
 
-    @Test
-    public void deleteMedicalRecordShouldShouldReturnNoContent() throws Exception{
-        when(medicalRecordService.updateMedicalRecord(johnsMedicalRecord)).thenReturn(johnsMedicalRecord);
-        mvc.perform(delete("/medicalrecord")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(jsonUtils.asJsonString(johnsMedicalRecord)))
-                .andDo(print())
-                .andExpect(status().isNoContent());
-    }
-
-    @Test
-    public void deleteMedicalRecordWhichDoesNotExistsShouldReturnNoContent() throws Exception{
-        when(medicalRecordService.updateMedicalRecord(johnsMedicalRecord)).thenReturn(null);
-        mvc.perform(delete("/medicalrecord")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(jsonUtils.asJsonString(johnsMedicalRecord)))
-                .andDo(print())
-                .andExpect(status().isNoContent());
-    }
+        // Effectuer la requête HTTP PUT avec le JSON en tant que corps de la requête
+        mockMvc.perform(put("/medicalRecord/{firstName}/{lastName}", "John", "Boyd")
+        .contentType("application/json")
+        .content(jsonInput))
+        .andExpect(status().isOk())
+        // Ajouter d'autres assertions selon les besoins
+        // Vous pouvez vérifier le contenu de la réponse JSON, l'objet mis à jour, etc.
+        .andExpect(jsonPath("$.firstName").value("John"))
+        .andExpect(jsonPath("$.lastName").value("Boyd"))
+        .andExpect(jsonPath("$.birthdate").value("03/06/1984"))
+        .andExpect(jsonPath("$.medications[0]").value("aznol:350mg"))
+        .andExpect(jsonPath("$.medications[1]").value("hydrapermazol:100mg"))
+        .andExpect(jsonPath("$.allergies[0]").value("nillacilan"))
+        .andReturn();
+}
 }

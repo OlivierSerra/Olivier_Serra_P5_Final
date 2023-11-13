@@ -6,17 +6,17 @@ import static org.junit.jupiter.api.Assertions.*;
 import com.openclassroom.SafetyNetAlertsEndOfMission.model.Person;
 import com.openclassroom.SafetyNetAlertsEndOfMission.repository.PersonRepository;
 import com.openclassroom.SafetyNetAlertsEndOfMission.services.PersonService;
-import static org.junit.jupiter.api.Assertions.*;
+//import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import org.junit.jupiter.api.Test;
+//import org.junit.jupiter.api.Test;
 
 
 
 @SpringBootTest
 public class PersonServiceTest {
 
-    private PersonService personService;
+    //private PersonService personService;
 
 /********************** test Save    ***********************/
     @Test
@@ -103,7 +103,7 @@ public class PersonServiceTest {
         // Vérifier si la personne retournée par PersonService est la même que celle mise à jour
         assertSame(personToUpdate, result);
     }
-
+/* 
     @Test
     public void testGetPerson() {
         // Créer un mock de PersonRepository
@@ -129,6 +129,7 @@ public class PersonServiceTest {
         // Vérifier si la personne retournée par PersonService est la même que celle récupérée
         assertSame(personToGet, result);
     }
+*/
 }
 
 

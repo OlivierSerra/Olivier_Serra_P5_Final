@@ -5,9 +5,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import com.openclassroom.SafetyNetAlertsEndOfMission.model.MedicalRecord;
 import com.openclassroom.SafetyNetAlertsEndOfMission.services.MedicalRecordService;
 

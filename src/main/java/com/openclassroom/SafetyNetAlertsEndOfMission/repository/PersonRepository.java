@@ -36,13 +36,13 @@ public class PersonRepository {
     }
 
     //fait fonctionner la fonction update de type optionnal
-    public Optional<Person> FindByNameFirstAndLastName(String firstName, String lastName) {  
+    public Person FindByNameFirstAndLastName(String firstName, String lastName) {  
         for (Person person : persons) {
         if (person.getFirstName().equals(firstName) && person.getLastName().equals(lastName)) {
-            return Optional.of(person); 
+            return person; 
         }
     }
-    return Optional.empty(); 
+    return null; 
     }
 
     /*
@@ -63,10 +63,10 @@ public class PersonRepository {
     * update
     */
     public Person updatePerson(String firstName, String lastName, Person PersonToUpdate) {
-        Optional<Person> personOptional = FindByNameFirstAndLastName(firstName, lastName);
+        Person personFound = FindByNameFirstAndLastName(firstName, lastName);
 
-        if (personOptional.isPresent()) {
-            Person updatedPerson = personOptional.get();
+        if (personFound != null) {
+            Person updatedPerson = personFound.get();
 
             updatedPerson.setAddress(PersonToUpdate.getAddress());
             updatedPerson.setCity(PersonToUpdate.getCity());

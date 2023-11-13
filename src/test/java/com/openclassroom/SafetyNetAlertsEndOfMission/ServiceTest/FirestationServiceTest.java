@@ -14,7 +14,7 @@ import com.openclassroom.SafetyNetAlertsEndOfMission.services.FirestationService
         @Test    
         public void testUpdateFirestation() {
             String address = "1509 Culver St";
-            int station = 3;
+            String station = "3";
             
             Firestation firestationToUpdate = new Firestation();
             firestationToUpdate.setAddress(address);
@@ -32,7 +32,7 @@ import com.openclassroom.SafetyNetAlertsEndOfMission.services.FirestationService
         public void testDeleteFirestation() {
             
             String address = "1509 Culver St";
-            int station = 3;
+            String station = "3";
             Firestation FirestationToDelete = new Firestation();
             FirestationToDelete.setAddress(address);
             FirestationToDelete.setStation(station);
@@ -49,7 +49,7 @@ import com.openclassroom.SafetyNetAlertsEndOfMission.services.FirestationService
         public void testSaveFirestation() {
             
             String address = "1509 Culver St";
-            int station = 3;
+            String station = "3";
             Firestation savedFirestation = new Firestation();
             savedFirestation.setAddress(address);
             savedFirestation.setStation(station);
@@ -66,7 +66,7 @@ import com.openclassroom.SafetyNetAlertsEndOfMission.services.FirestationService
         public void testAddFirestation() {
             
             String address = "1509 Culver St";
-            int station = 3;
+            String station = "3";
             Firestation addedFirestation = new Firestation();
             addedFirestation.setAddress(address);
             addedFirestation.setStation(station);
@@ -83,7 +83,7 @@ import com.openclassroom.SafetyNetAlertsEndOfMission.services.FirestationService
         public void testGetFirestation() {
             
             String address = "1509 Culver St";
-            int station = 3;
+            String station = "3";
             Firestation getFirestation = new Firestation();
             getFirestation.setAddress(address);
             getFirestation.setStation(station);

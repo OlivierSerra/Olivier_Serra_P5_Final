@@ -35,13 +35,13 @@ public class MedicalRecordRepository {
     }
 
     //fait fonctionner la fonction update de type optionnal
-    public Optional<MedicalRecord> FindByAdressAndlastNameNumber(String firstName, String lastName) {  
+    public MedicalRecord FindByAdressAndlastNameNumber(String firstName, String lastName) {  
         for (MedicalRecord medicalRecord : medicalRecords) {
         if (medicalRecord.getFirstName().equals(firstName) && medicalRecord.getLastName().equals(lastName)) {
-            return Optional.of(medicalRecord); 
+            return medicalRecord; 
         }
     }
-    return Optional.empty(); 
+    return null; 
     }
 
     /*
@@ -61,10 +61,10 @@ public class MedicalRecordRepository {
     * update
     */
     public MedicalRecord updateMedicalRecord(String firstName, String lastName, MedicalRecord medicalRecordToUpdate) {
-        Optional<MedicalRecord> medicalRecordOptional = FindByAdressAndlastNameNumber(firstName, lastName);
+        MedicalRecord medicalRecordFound = FindByAdressAndlastNameNumber(firstName, lastName);
 
-        if (medicalRecordOptional.isPresent()) {
-            MedicalRecord updatedmedicalRecord = medicalRecordOptional.get();
+        if (medicalRecordFound != null) {
+            MedicalRecord updatedmedicalRecord = medicalRecordFound.get();
 
             updatedmedicalRecord.setBirthdate(medicalRecordToUpdate.getBirthdate());
             updatedmedicalRecord.setMedications(medicalRecordToUpdate.getMedications());
