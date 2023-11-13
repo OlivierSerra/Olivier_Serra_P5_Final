@@ -1,4 +1,4 @@
-package com.openclassroom.SafetyNetAlertsEndOfMission.ServiceTest;
+package com.openclassroom.SafetyNetAlertsEndOfMission.repository;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,9 +14,34 @@ import static org.mockito.Mockito.*;
 
 
 @SpringBootTest
-public class PersonServiceTest {
+public class PersonRepositoryTest {
 
-    //private PersonService personService;
+    /*************** test pour accéder à une personne  **********************/
+    @Test
+    public void testGetPerson() {
+        // Créer un mock de PersonRepository
+        PersonRepository personRepositoryMock = mock(PersonRepository.class);
+
+        // Créer une instance de PersonService avec le mock
+        PersonService personService = new PersonService(personRepositoryMock);
+
+        // Créer une personne fictive à récupérer
+        String firstNameToGet = "Olivier";
+        String lastNameToGet = "Serra";
+        Person personToGet = new Person("Olivier", "Serra", "1565 Culver St", "Culver", "97451", "841-874-6565","OlivierSerra@email.com");
+
+        // Configurer le comportement du mock pour retourner la même personne lors de l'appel à getPerson
+        when(personRepositoryMock.FindByNameFirstAndLastName(firstNameToGet, lastNameToGet)).thenReturn(personToGet);
+
+        // Appeler la méthode getPerson de PersonService
+        Person result = personService.getPerson(firstNameToGet, lastNameToGet);
+
+        // Vérifier si la méthode getPerson de PersonRepository a été appelée avec les paramètres corrects
+        verify(personRepositoryMock, times(1)).FindByNameFirstAndLastName(firstNameToGet, lastNameToGet);
+
+        // Vérifier si la personne retournée par PersonService est la même que celle récupérée
+        assertSame(personToGet, result);
+    }
 
 /********************** test Save    ***********************/
     @Test
@@ -29,13 +54,13 @@ public class PersonServiceTest {
 
         // Créer une personne fictive
         Person personToSave = new Person(
-            "Marie", 
-            "Moore",
+            "Olivier", 
+            "Serra",
             "1565 Culver St",
             "Culver",
             "97451",
             "841-874-6565",
-            "MarieMoore@email.com");
+            "olivierSerra@email.com");
 
         // Configurer le comportement du mock pour retourner la même personne lors de l'appel à save
         when(personRepositoryMock.save(personToSave)).thenReturn(personToSave);
@@ -59,11 +84,11 @@ public class PersonServiceTest {
         PersonService personService = new PersonService(personRepositoryMock);
 
         // Créer une personne fictive à supprimer
-        String firstNameToDelete = "Marie";
-        String lastNameToDelete = "Moore";
+        String firstNameToDelete = "Olivier";
+        String lastNameToDelete = "Serra";
 
         // Configurer le comportement du mock pour retourner la même personne lors de l'appel à deletePerson
-        Person deletedPerson = new Person("Marie", "Moore", "1565 Culver St", "Culver", "97451", "841-874-6565","MarieMoore@email.com");
+        Person deletedPerson = new Person("Olivier", "Serra", "1565 Culver St", "Culver", "97451", "841-874-6565","OlivierSerra@email.com");
         when(personRepositoryMock.deletePerson(firstNameToDelete, lastNameToDelete)).thenReturn(deletedPerson);
 
         // Appeler la méthode delete de PersonService
@@ -87,9 +112,9 @@ public class PersonServiceTest {
         PersonService personService = new PersonService(personRepositoryMock);
 
         // Créer une personne fictive à mettre à jour
-        String firstNameToUpdate = "Marie";
-        String lastNameToUpdate = "Moore";
-        Person personToUpdate = new Person("Marie", "Moore", "1565 Culver St", "Culver", "97451", "841-874-6565","MarieMoore@email.com");
+        String firstNameToUpdate = "Olivier";
+        String lastNameToUpdate = "Serra";
+        Person personToUpdate = new Person("Olivier", "Serra", "1565 Culver St", "Culver", "97451", "841-874-6565","OlivierSerra@email.com");
 
         // Configurer le comportement du mock pour retourner la même personne lors de l'appel à updatePerson
         when(personRepositoryMock.updatePerson(firstNameToUpdate, lastNameToUpdate, personToUpdate)).thenReturn(personToUpdate);
@@ -103,33 +128,8 @@ public class PersonServiceTest {
         // Vérifier si la personne retournée par PersonService est la même que celle mise à jour
         assertSame(personToUpdate, result);
     }
-/* 
-    @Test
-    public void testGetPerson() {
-        // Créer un mock de PersonRepository
-        PersonRepository personRepositoryMock = mock(PersonRepository.class);
 
-        // Créer une instance de PersonService avec le mock
-        PersonService personService = new PersonService(personRepositoryMock);
 
-        // Créer une personne fictive à récupérer
-        String firstNameToGet = "Marie";
-        String lastNameToGet = "Moore";
-        Person personToGet = new Person("Marie", "Moore", "1565 Culver St", "Culver", "97451", "841-874-6565","MarieMoore@email.com");
-
-        // Configurer le comportement du mock pour retourner la même personne lors de l'appel à getPerson
-        when(personRepositoryMock.FindByNameFirstAndLastName(firstNameToGet, lastNameToGet)).thenReturn(personToGet);
-
-        // Appeler la méthode getPerson de PersonService
-        Person result = personService.getPerson(firstNameToGet, lastNameToGet);
-
-        // Vérifier si la méthode getPerson de PersonRepository a été appelée avec les paramètres corrects
-        verify(personRepositoryMock, times(1)).FindByNameFirstAndLastName(firstNameToGet, lastNameToGet);
-
-        // Vérifier si la personne retournée par PersonService est la même que celle récupérée
-        assertSame(personToGet, result);
-    }
-*/
 }
 
 

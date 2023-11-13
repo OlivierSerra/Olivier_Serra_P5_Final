@@ -1,4 +1,4 @@
-package com.openclassroom.SafetyNetAlertsEndOfMission.ServiceTest;
+package com.openclassroom.SafetyNetAlertsEndOfMission.repository;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,29 +9,27 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import com.openclassroom.SafetyNetAlertsEndOfMission.model.MedicalRecord;
-import com.openclassroom.SafetyNetAlertsEndOfMission.services.MedicalRecordService;
+import com.openclassroom.SafetyNetAlertsEndOfMission.repository.MedicalRecordRepository;
 
 @SpringBootTest
-public class MedicalRecordServiceTest {
-    private MedicalRecordService medicalRecordService;
+public class MedicalRecordRepositoryTest {
+    private MedicalRecordRepository medicalRecordRepository;
 
-
+    /****************** test to getMedicalRecord     *************/
     @Test    
-    public void testUpdateMedicalRecord() {
+    public void testGetMedicalRecord() {
         
         String firstName = "John";
         String lastName = "Boyd";
-        MedicalRecord updatedMedicalRecord = new MedicalRecord();
-        updatedMedicalRecord.setBirthdate("01/01/1990");
-        
+        MedicalRecord getMedicalRecord = new MedicalRecord();
+        getMedicalRecord.setBirthdate("01/01/1990");
         List<String> medications = Arrays.asList("aznol:350mg", "hydrapermazol:100mg");
-        updatedMedicalRecord.setMedications(medications);
-        
-        List<String> allergies = Arrays.asList("aznol:350mg", "hydrapermazol:100mg");
-        updatedMedicalRecord.setAllergies(allergies);
+        getMedicalRecord.setMedications(medications);
+        List<String> allergies = Arrays.asList("aznol:350mg", "hydrapermazol:100mg");        
+        getMedicalRecord.setAllergies(allergies);
 
         // Appelez la méthode updateMedicalRecord
-        MedicalRecord result = medicalRecordService.update(firstName, lastName, updatedMedicalRecord);
+        MedicalRecord result = medicalRecordRepository.medicalRecord(firstName, lastName);
 
         // Vérifiez si le dossier médical a été mis à jour correctement
         assertNotNull(result);
@@ -42,6 +40,9 @@ public class MedicalRecordServiceTest {
         assertEquals("nillacilan", result.getAllergies());
     }
 
+
+
+/******************** test to save   ***************/
     @Test    
     public void testSaveMedicalRecord() {
         
@@ -58,7 +59,7 @@ public class MedicalRecordServiceTest {
         savedMedicalRecord.setAllergies(allergies);
         
         // Appelez la méthode updateMedicalRecord
-        MedicalRecord result = medicalRecordService.save(savedMedicalRecord);
+        MedicalRecord result = medicalRecordRepository.saveMedicalRecord(savedMedicalRecord);
 
         // Vérifiez si le dossier médical a été mis à jour correctement
         assertNotNull(result);
@@ -69,7 +70,7 @@ public class MedicalRecordServiceTest {
         assertEquals("nillacilan", result.getAllergies());
     }
 
-
+/************ test to delete    ***********/
     @Test    
     public void testDeleteMedicalRecord() {
         
@@ -84,7 +85,7 @@ public class MedicalRecordServiceTest {
         deleteMedicalRecord.setAllergies(allergies);
 
         // Appelez la méthode updateMedicalRecord
-        MedicalRecord result = medicalRecordService.delete(firstName, lastName);
+        MedicalRecord result = medicalRecordRepository.deleteMedicalRecord(firstName, lastName);
 
         // Vérifiez si le dossier médical a été mis à jour correctement
         assertNotNull(result);
@@ -94,21 +95,23 @@ public class MedicalRecordServiceTest {
         assertEquals("aznol:350mg, hydrapermazol:100mg", result.getMedications());
         assertEquals("nillacilan", result.getAllergies());
     }
-
+/**************** test to update   *********************/
     @Test    
-    public void testGetMedicalRecord() {
+    public void testUpdateMedicalRecord() {
         
         String firstName = "John";
         String lastName = "Boyd";
-        MedicalRecord getMedicalRecord = new MedicalRecord();
-        getMedicalRecord.setBirthdate("01/01/1990");
+        MedicalRecord updatedMedicalRecord = new MedicalRecord();
+        updatedMedicalRecord.setBirthdate("01/01/1990");
+        
         List<String> medications = Arrays.asList("aznol:350mg", "hydrapermazol:100mg");
-        getMedicalRecord.setMedications(medications);
-        List<String> allergies = Arrays.asList("aznol:350mg", "hydrapermazol:100mg");        
-        getMedicalRecord.setAllergies(allergies);
+        updatedMedicalRecord.setMedications(medications);
+        
+        List<String> allergies = Arrays.asList("aznol:350mg", "hydrapermazol:100mg");
+        updatedMedicalRecord.setAllergies(allergies);
 
         // Appelez la méthode updateMedicalRecord
-        MedicalRecord result = medicalRecordService.getmedicalRecord(firstName, lastName);
+        MedicalRecord result = medicalRecordRepository.updateMedicalRecord(firstName, lastName, updatedMedicalRecord);
 
         // Vérifiez si le dossier médical a été mis à jour correctement
         assertNotNull(result);
