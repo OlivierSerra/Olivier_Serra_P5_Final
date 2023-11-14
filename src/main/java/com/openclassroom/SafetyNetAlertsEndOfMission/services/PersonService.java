@@ -31,7 +31,7 @@ public Person save(Person person) {
     }
 
 /*
-* used to delete a person
+* used to delete a person in the list
 */
 public Person delete(String firstName, String lastName) {
     return personRepository.deletePerson(firstName, lastName);
@@ -44,6 +44,9 @@ public Person update(String firstName, String lastName, Person PersonToUpdate) {
     return personRepository.updatePerson(firstName, lastName, PersonToUpdate);   
     }
 
+/*
+ * getone person un the list 
+ */
 public Person getPerson(String firstName, String lastName) {
     return personRepository.person(firstName, lastName);
 }

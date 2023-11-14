@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
-
 @Data
 @Service
 public class FirestationService {
@@ -23,7 +22,7 @@ public List<Firestation> findAll() {
 }
 
 /*
-* add person in the list
+* add firestation in the list
 */
 public Firestation save(Firestation firestation ) {
     Firestation addedFirestation = firestationRepository.saveFirestation(firestation); 
@@ -31,14 +30,14 @@ public Firestation save(Firestation firestation ) {
     }
 
 /*
-* used to delete a person
+* This is used to delete a firestation from the list
 */
 public Firestation delete(String address, String station) {
     return firestationRepository.deleteFirestation(address, station);
     }
 
 /*
-* return person if criterias match  
+* this is used to find a firestation in the list  
 */       
 public Firestation update(String address, String station, Firestation firestationToUpdate) {
     return firestationRepository.updateFirestation(address, station, firestationToUpdate);   

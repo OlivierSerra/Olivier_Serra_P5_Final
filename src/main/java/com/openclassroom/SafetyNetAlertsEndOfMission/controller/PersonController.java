@@ -25,14 +25,14 @@ public class PersonController {
         this.personService = personService;
     }
 
-/** This method is used to find the list with all the people *****/
+/** This method is used to put all the people in the list *****/
     @GetMapping("/person") 
         public List<Person>persons() {
             return personService.findAll();
         }
  
 /*  
-* This méthod is used to add one person in the list
+* This method is used to add one person in the people list
 */
     @PostMapping("/person")
         public Person addPerson(@RequestBody Person person) {

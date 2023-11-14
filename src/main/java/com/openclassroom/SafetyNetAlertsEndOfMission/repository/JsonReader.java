@@ -5,13 +5,16 @@ import com.openclassroom.SafetyNetAlertsEndOfMission.model.Firestation;
 import com.openclassroom.SafetyNetAlertsEndOfMission.model.MedicalRecord;
 import com.openclassroom.SafetyNetAlertsEndOfMission.model.Person;
 import org.springframework.stereotype.Component;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
+/*
+ * this is used to red dats form the json file and put it on person list, firestation list, medicalRecord list
+ */
+
+ @Component
 public class JsonReader {
     
     List<Person> persons = new ArrayList<>();

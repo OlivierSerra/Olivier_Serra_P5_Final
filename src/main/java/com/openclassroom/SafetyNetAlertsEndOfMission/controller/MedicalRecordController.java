@@ -25,14 +25,17 @@ public class MedicalRecordController {
         this.medicalRecordService = medicalRecordService;
     }
 
-/** This method is used to find the list with all the people *****/
-    @GetMapping("/medicalRecord") 
+/*
+ * This method is used to put all the medicalRecord in the list 
+ */
+
+   @GetMapping("/medicalRecord") 
         public List<MedicalRecord>medicalRecords() {
             return medicalRecordService.findAll();
         }
  
 /*  
-* This méthod is used to add one medicalRecord in the list
+* This méthod is used to add one medicalRecord on the list
 */
     @PostMapping("/medicalRecord")
         public MedicalRecord addmedicalRecord(@RequestBody MedicalRecord medicalRecord) {

@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
-
 @Data
 @Service
 public class MedicalRecordService {
@@ -23,7 +22,7 @@ public List<MedicalRecord> findAll() {
 }
 
 /*
-* add person in the list
+* add medicalRecord in the list
 */
 public MedicalRecord save(MedicalRecord medicalRecord ) {
     MedicalRecord addedmedicalRecord = medicalRecordRepository.saveMedicalRecord(medicalRecord); 
@@ -31,18 +30,22 @@ public MedicalRecord save(MedicalRecord medicalRecord ) {
     }
 
 /*
-* used to delete a person
+* This is used to delete a medicalRecord from the list
 */
 public MedicalRecord delete(String firstName, String lastName) {
     return medicalRecordRepository.deleteMedicalRecord(firstName, lastName);
     }
 
 /*
-* return person if criterias match  
+* This is used to return a medicalRecord if criterias match  
 */       
 public MedicalRecord update(String firstName, String lastName, MedicalRecord medicalRecordToUpdate) {
     return medicalRecordRepository.updateMedicalRecord(firstName, lastName, medicalRecordToUpdate);   
     }
+
+/*
+* This is used to return one medicalRecord if criterias match  
+*/
 
 public MedicalRecord getmedicalRecord (String firstName, String lastName) {
     return medicalRecordRepository.medicalRecord(firstName, lastName);

@@ -1,9 +1,9 @@
 package com.openclassroom.SafetyNetAlertsEndOfMission.repository;
+
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import com.openclassroom.SafetyNetAlertsEndOfMission.model.MedicalRecord;
 import java.util.List;
-import java.util.Optional;
 
 @Component
 @Repository
@@ -21,10 +21,10 @@ public class MedicalRecordRepository {
         return this.medicalRecords;
     }
 
-    /* find one medicalRecord
-    * 
-    */    
-    //fait fonctionner la fonction delete de type medicalRecord
+/* 
+ * This is used to Find one medicalRecord
+ */    
+    //Delete function can operate with this method 
     public MedicalRecord medicalRecord(String firstName, String lastName) {  
         for (MedicalRecord medicalRecord : medicalRecords) {
         if (medicalRecord.getFirstName().equals(firstName) && medicalRecord.getLastName().equals(lastName)) {
@@ -34,7 +34,7 @@ public class MedicalRecordRepository {
     return null; 
     }
 
-    //fait fonctionner la fonction update de type optionnal
+    //update function can operate with this method 
     public MedicalRecord FindByAdressAndlastNameNumber(String firstName, String lastName) {  
         for (MedicalRecord medicalRecord : medicalRecords) {
         if (medicalRecord.getFirstName().equals(firstName) && medicalRecord.getLastName().equals(lastName)) {
@@ -45,7 +45,7 @@ public class MedicalRecordRepository {
     }
 
     /*
-    *Save
+    *This is used to save one medicalRecord in the medicalRecord List
     */
     public MedicalRecord saveMedicalRecord(MedicalRecord medicalRecord) {
         for (MedicalRecord existingmedicalRecord : medicalRecords) {
@@ -58,7 +58,7 @@ public class MedicalRecordRepository {
     }
 
     /*
-    * update
+    * this is used to update datas from MedicalRecord for one person
     */
     public MedicalRecord updateMedicalRecord(String firstName, String lastName, MedicalRecord medicalRecordToUpdate) {
         MedicalRecord medicalRecordFound = FindByAdressAndlastNameNumber(firstName, lastName);
@@ -74,7 +74,9 @@ public class MedicalRecordRepository {
         }
         return null;
     }
-/*************************************** Delete ******************************** */
+/*
+ * This is used to delete Medical files from Medical files 
+ */
  
     public MedicalRecord deleteMedicalRecord(String firstName, String lastName) {
         MedicalRecord deletedmedicalRecord = null;

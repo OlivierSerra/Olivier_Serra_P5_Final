@@ -3,10 +3,7 @@ package com.openclassroom.SafetyNetAlertsEndOfMission.model;
 import lombok.*;
 import java.util.List;
 
-/**
- * Medical Record class creates objects containing common properties
- * with Person objects (firstname, lastname)
- */
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data

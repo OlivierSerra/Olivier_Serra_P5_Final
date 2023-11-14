@@ -25,14 +25,15 @@ public class FirestationController {
         this.firestationService = firestationService;
     }
 
-/** This method is used to find the list with all the people *****/
+/*
+* This method is used to put all the firestation in a list*****/
     @GetMapping("/firestation") 
         public List<Firestation>firestations() {
             return firestationService.findAll();
         }
  
 /*  
-* This méthod is used to add one firestation in the list
+* This method is used to add one firestation in the list
 */
     @PostMapping("/firestation")
         public Firestation addfirestation(@RequestBody Firestation firestation) {
@@ -40,7 +41,7 @@ public class FirestationController {
         }
 
 /*
-* This method is used to delete one firestation in the list
+* This method is used to delete one firestation inside the list
 */ 
     @DeleteMapping("/firestation/{address}/{station}")
     public Firestation deletefirestation(
