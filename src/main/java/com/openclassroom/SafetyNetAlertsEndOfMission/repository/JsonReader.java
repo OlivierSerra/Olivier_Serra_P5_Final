@@ -14,7 +14,7 @@ import java.util.List;
  * this is used to red dats form the json file and put it on person list, firestation list, medicalRecord list
  */
 
- @Component
+@Component
 public class JsonReader {
     
     List<Person> persons = new ArrayList<>();

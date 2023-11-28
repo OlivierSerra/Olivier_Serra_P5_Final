@@ -17,39 +17,38 @@ public class MedicalRecordService {
         this.medicalRecordRepository = medicalRecordRepository;
     }
 
-public List<MedicalRecord> findAll() {
-    return medicalRecordRepository.findAll();
-}
+    public List<MedicalRecord> findAll() {
+        return medicalRecordRepository.getMedicalRecords();
+    }
 
 /*
 * add medicalRecord in the list
 */
-public MedicalRecord save(MedicalRecord medicalRecord ) {
-    MedicalRecord addedmedicalRecord = medicalRecordRepository.saveMedicalRecord(medicalRecord); 
-    return addedmedicalRecord;
+    public MedicalRecord save(MedicalRecord medicalRecord ) {
+        MedicalRecord addedmedicalRecord = medicalRecordRepository.saveMedicalRecord(medicalRecord); 
+        return addedmedicalRecord;
     }
 
 /*
 * This is used to delete a medicalRecord from the list
 */
-public MedicalRecord delete(String firstName, String lastName) {
-    return medicalRecordRepository.deleteMedicalRecord(firstName, lastName);
+    public MedicalRecord delete(String firstName, String lastName) {
+        return medicalRecordRepository.deleteMedicalRecord(firstName, lastName);
     }
 
 /*
 * This is used to return a medicalRecord if criterias match  
 */       
-public MedicalRecord update(String firstName, String lastName, MedicalRecord medicalRecordToUpdate) {
-    return medicalRecordRepository.updateMedicalRecord(firstName, lastName, medicalRecordToUpdate);   
+    public MedicalRecord update(String firstName, String lastName, MedicalRecord medicalRecordToUpdate) {
+        return medicalRecordRepository.updateMedicalRecord(firstName, lastName, medicalRecordToUpdate);   
     }
 
 /*
 * This is used to return one medicalRecord if criterias match  
 */
 
-public MedicalRecord getmedicalRecord (String firstName, String lastName) {
-    return medicalRecordRepository.medicalRecord(firstName, lastName);
-}
-
+    public MedicalRecord getMedicalRecord (String firstName, String lastName) {
+        return medicalRecordRepository.find(firstName, lastName);
+    }
 }
 

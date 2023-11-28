@@ -17,7 +17,6 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 
 public class Content {
-    
     private List<Person> persons;
     private List<Firestation> firestations;
     private List<MedicalRecord> medicalrecords;

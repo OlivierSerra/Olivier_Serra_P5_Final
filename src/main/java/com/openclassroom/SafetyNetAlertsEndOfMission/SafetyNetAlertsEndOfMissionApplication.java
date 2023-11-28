@@ -9,5 +9,4 @@ public class SafetyNetAlertsEndOfMissionApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SafetyNetAlertsEndOfMissionApplication.class, args);
 	}
-
 }

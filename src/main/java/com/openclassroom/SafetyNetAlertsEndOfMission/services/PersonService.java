@@ -18,38 +18,39 @@ public class PersonService {
         this.personRepository = personRepository;
     }
 
-public List<Person> findAll() {
-    return personRepository.findAll();
-}
+    public List<Person> findAll() {
+        return personRepository.getPersons();
+    }
 
 /*
 * add person in the list
 */
-public Person save(Person person) {
-    Person addedPerson = personRepository.save(person); 
-    return addedPerson;
+    public Person save(Person person) {
+        Person addedPerson = personRepository.save(person); 
+        return addedPerson;
     }
 
 /*
 * used to delete a person in the list
 */
-public Person delete(String firstName, String lastName) {
-    return personRepository.deletePerson(firstName, lastName);
+    public Person delete(String firstName, String lastName) {
+        return personRepository.deletePerson(firstName, lastName);
     }
 
 /*
 * return person if criterias match  
 */       
-public Person update(String firstName, String lastName, Person PersonToUpdate) {
-    return personRepository.updatePerson(firstName, lastName, PersonToUpdate);   
+    public Person update(String firstName, String lastName, Person PersonToUpdate) {
+        return personRepository.updatePerson(firstName, lastName, PersonToUpdate);   
     }
 
 /*
  * getone person un the list 
  */
-public Person getPerson(String firstName, String lastName) {
-    return personRepository.person(firstName, lastName);
-}
+    public Person getPerson(String firstName, String lastName) {
+        return personRepository.find(firstName, lastName);
+    }
 
+    
 }
 

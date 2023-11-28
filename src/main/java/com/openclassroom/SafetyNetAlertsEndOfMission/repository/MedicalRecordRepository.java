@@ -17,28 +17,15 @@ public class MedicalRecordRepository {
         this.medicalRecords = this.jsonDataReader.getMedicalRecordsData();
     }
 
-    public List<MedicalRecord> findAll() {
-        return this.medicalRecords;
-    }
-
-/* 
- * This is used to Find one medicalRecord
- */    
-    //Delete function can operate with this method 
-    public MedicalRecord medicalRecord(String firstName, String lastName) {  
-        for (MedicalRecord medicalRecord : medicalRecords) {
-        if (medicalRecord.getFirstName().equals(firstName) && medicalRecord.getLastName().equals(lastName)) {
-            return medicalRecord; 
-        }
-    }
-    return null; 
+    public List<MedicalRecord> getMedicalRecords() {
+        return medicalRecords;
     }
 
     //update function can operate with this method 
-    public MedicalRecord FindByAdressAndlastNameNumber(String firstName, String lastName) {  
+    public MedicalRecord find(String firstName, String lastName) {  
         for (MedicalRecord medicalRecord : medicalRecords) {
-        if (medicalRecord.getFirstName().equals(firstName) && medicalRecord.getLastName().equals(lastName)) {
-            return medicalRecord; 
+            if (medicalRecord.getFirstName().equals(firstName) && medicalRecord.getLastName().equals(lastName)) {
+                return medicalRecord; 
         }
     }
     return null; 
@@ -61,16 +48,12 @@ public class MedicalRecordRepository {
     * this is used to update datas from MedicalRecord for one person
     */
     public MedicalRecord updateMedicalRecord(String firstName, String lastName, MedicalRecord medicalRecordToUpdate) {
-        MedicalRecord medicalRecordFound = FindByAdressAndlastNameNumber(firstName, lastName);
-
-        if (medicalRecordFound != null) {
-            MedicalRecord updatedmedicalRecord = medicalRecordFound.get();
-
-            updatedmedicalRecord.setBirthdate(medicalRecordToUpdate.getBirthdate());
-            updatedmedicalRecord.setMedications(medicalRecordToUpdate.getMedications());
-            updatedmedicalRecord.setAllergies(medicalRecordToUpdate.getAllergies());
-
-            return saveMedicalRecord(updatedmedicalRecord);
+        MedicalRecord medicalRecordFound = find(firstName, lastName);
+            if (medicalRecordFound != null) {
+            medicalRecordFound.setBirthdate(medicalRecordToUpdate.getBirthdate());
+            medicalRecordFound.setMedications(medicalRecordToUpdate.getMedications());
+            medicalRecordFound.setAllergies(medicalRecordToUpdate.getAllergies());
+                return saveMedicalRecord(medicalRecordFound);
         }
         return null;
     }
@@ -79,15 +62,11 @@ public class MedicalRecordRepository {
  */
  
     public MedicalRecord deleteMedicalRecord(String firstName, String lastName) {
-        MedicalRecord deletedmedicalRecord = null;
-        MedicalRecord medicalRecordToDelete = medicalRecord(firstName, lastName);
-        for (MedicalRecord p : this.medicalRecords) {
-        if (p.getFirstName().equals(firstName) && p.getLastName().equals(lastName)) {
-            medicalRecords.remove(p);
-            return deletedmedicalRecord = medicalRecordToDelete; 
-        }
+        MedicalRecord medicalRecordToDelete = find(firstName, lastName);
+            if (medicalRecordToDelete != null) {
+                medicalRecords.remove(medicalRecordToDelete);
+                return medicalRecordToDelete;
+            }   
+        return null;
     }
-    return deletedmedicalRecord;
-    }
-
 }

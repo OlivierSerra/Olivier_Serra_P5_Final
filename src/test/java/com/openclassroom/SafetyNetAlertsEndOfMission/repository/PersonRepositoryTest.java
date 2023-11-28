@@ -1,40 +1,59 @@
 package com.openclassroom.SafetyNetAlertsEndOfMission.repository;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import static org.junit.jupiter.api.Assertions.*;
+
 import com.openclassroom.SafetyNetAlertsEndOfMission.model.Person;
-import com.openclassroom.SafetyNetAlertsEndOfMission.services.PersonService;
+
 import static org.mockito.Mockito.*;
+
+import java.util.Arrays;
+import java.util.List;
 
 @SpringBootTest
 public class PersonRepositoryTest {
 
-/*************** test pour accéder à une personne  **********************/
-    @Test
-    public void testGetPerson() {
-        // arrange 
-        PersonRepository personRepositoryMock = mock(PersonRepository.class);
-        PersonService personService = new PersonService(personRepositoryMock);
-        String firstNameToGet = "Olivier";
-        String lastNameToGet = "Serra";
-        Person personToGet = new Person("Olivier", "Serra", "1565 Culver St", "Culver", "97451", "841-874-6565","OlivierSerra@email.com");
+    
+    private PersonRepository personRepository;
+    private JsonReader dataReaderMock;
 
-        //act
-        when(personRepositoryMock.FindByNameFirstAndLastName(firstNameToGet, lastNameToGet)).thenReturn(personToGet);
-        Person result = personService.getPerson(firstNameToGet, lastNameToGet);
-
-        //assert
-        verify(personRepositoryMock, times(1)).FindByNameFirstAndLastName(firstNameToGet, lastNameToGet);
-        assertSame(personToGet, result);
+    @Autowired
+    public PersonRepositoryTest(JsonReader dataReaderMock) throws Exception {
+        this.dataReaderMock = dataReaderMock; 
+        this.personRepository = new PersonRepository(dataReaderMock);
     }
 
-/********************** test Save    ***********************/
     @Test
-    public void testSave() {
+    public void testGetPerson() throws Exception {
         //arrange
-        PersonRepository personRepositoryMock = mock(PersonRepository.class);
-        PersonService personService = new PersonService(personRepositoryMock);
+        JsonReader dataReaderMock = mock(JsonReader.class);
+       Person personToFind = new Person(
+            "Olivier", 
+            "Serra",
+            "1565 Culver St",
+            "Culver",
+            "97451",
+            "841-874-6565",
+            "olivierSerra@email.com");
+        List<Person> PersonList = Arrays.asList(personToFind);
+        //act
+        when(dataReaderMock.getPersonsData()).thenReturn(PersonList);
+        PersonRepository PersonRepository = new PersonRepository(dataReaderMock); 
+        List<Person> result = PersonRepository.getPersons();
+        //assert
+        assertEquals(1, result.size());
+        assertEquals(personToFind, result.get(0));
+    }
+/********************** test Save    ***********************/
+
+     @Test
+    public void testSavePerson() throws Exception {
+        //arrange
+        JsonReader dataReaderMock = mock(JsonReader.class);
         Person personToSave = new Person(
             "Olivier", 
             "Serra",
@@ -43,54 +62,70 @@ public class PersonRepositoryTest {
             "97451",
             "841-874-6565",
             "olivierSerra@email.com");
-
-        // act
-        when(personRepositoryMock.save(personToSave)).thenReturn(personToSave);
-
-        Person savedPerson = personService.save(personToSave);
-
-        //assert
-        verify(personRepositoryMock, times(1)).save(personToSave);
-        assertSame(personToSave, savedPerson);
+        //act
+        PersonRepository personRepository = new PersonRepository(dataReaderMock);
+        personRepository.save(personToSave);
+        //assert 
+        List<Person> result = personRepository.getPersons();
+        assertEquals(1, result.size());
+        assertEquals(personToSave, result.get(0));
     }
 /************************************ test delete    **************************/
-    @Test
-    public void testDelete() {
-        // arrange
-        PersonRepository personRepositoryMock = mock(PersonRepository.class);
-        PersonService personService = new PersonService(personRepositoryMock);
-        String firstNameToDelete = "Olivier";
-        String lastNameToDelete = "Serra";
-
-        Person deletedPerson = new Person("Olivier", "Serra", "1565 Culver St", "Culver", "97451", "841-874-6565","OlivierSerra@email.com");
+    
+     @Test
+    public void testDeletePerson() throws Exception {
+        //arrange
+        JsonReader dataReaderMock = mock(JsonReader.class);
+        Person personToSave = new Person(
+            "Olivier", 
+            "Serra",
+            "1565 Culver St",
+            "Culver",
+            "97451",
+            "841-874-6565",
+            "olivierSerra@email.com");
         //act
-        when(personRepositoryMock.deletePerson(firstNameToDelete, lastNameToDelete)).thenReturn(deletedPerson);
-
-        Person result = personService.delete(firstNameToDelete, lastNameToDelete);
-
-        //assert
-        verify(personRepositoryMock, times(1)).deletePerson(firstNameToDelete, lastNameToDelete);
-        assertSame(deletedPerson, result);
+        PersonRepository personRepository = new PersonRepository(dataReaderMock);
+        personRepository.deletePerson(
+            "Olivier", 
+            "Serra");
+        //assert 
+        List<Person> result = personRepository.getPersons();
+        assertEquals(0, result.size());
     }
 
     /****************************** test update *************************/
     
-    @Test
-    public void testUpdate() {
-        // arrange
-        PersonRepository personRepositoryMock = mock(PersonRepository.class);
-        PersonService personService = new PersonService(personRepositoryMock);
+     @Test
+    public void testUpdatePerson() throws Exception {
+        //arrange
+        JsonReader dataReaderMock = mock(JsonReader.class);
         String firstNameToUpdate = "Olivier";
         String lastNameToUpdate = "Serra";
-        Person personToUpdate = new Person("Olivier", "Serra", "1565 Culver St", "Culver", "97451", "841-874-6565","OlivierSerra@email.com");
-
-        // act
-        when(personRepositoryMock.updatePerson(firstNameToUpdate, lastNameToUpdate, personToUpdate)).thenReturn(personToUpdate);
-        Person result = personService.update(firstNameToUpdate, lastNameToUpdate, personToUpdate);
-
-        // assert
-        verify(personRepositoryMock, times(1)).updatePerson(firstNameToUpdate, lastNameToUpdate, personToUpdate);
-        assertSame(personToUpdate, result);
+        Person personToUpdate = new Person(
+            "Olivier", 
+            "Serra",
+            "1565 Culver St",
+            "Culver",
+            "97451",
+            "841-874-6565",
+            "olivierSerra@email.com");
+        Person updatedPerson = new Person(
+            "Olivier", 
+            "Serra",
+            "1556 Culver St",
+            "Culver",
+            "97451",
+            "841-874-6565",
+            "olivierSerra@email.com");    
+        //act
+        PersonRepository personRepository = new PersonRepository(dataReaderMock);
+        personRepository.save(personToUpdate);
+        personRepository.updatePerson(firstNameToUpdate,lastNameToUpdate, updatedPerson);
+        //assert 
+        List<Person> result = personRepository.getPersons();
+        assertEquals(1, result.size());
+        assertEquals(updatedPerson, result.get(0));
     }
 }
 
