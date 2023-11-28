@@ -82,7 +82,6 @@ public void testAddPerson() throws Exception {
             .contentType(MediaType.APPLICATION_JSON)
             .content(jsonInput))
             .andExpect(MockMvcResultMatchers.status().isOk())
-            // Vérifier la structure de la réponse JSON, ajustez-la en fonction de votre implémentation
             .andExpect(MockMvcResultMatchers.jsonPath("$.firstName").value("Marie"))
             .andExpect(MockMvcResultMatchers.jsonPath("$.lastName").value("Moore"))
             .andExpect(MockMvcResultMatchers.jsonPath("$.address").value("1565 Culver St"))
